@@ -1,6 +1,0 @@
-webserver:
-  bind_address: 127.0.0.1:8082
-resources:
-  directories:
-  - name: dir1
-    path: /home/jojii/mnt/directory1
