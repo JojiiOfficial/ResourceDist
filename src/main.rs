@@ -1,12 +1,15 @@
+pub mod api_types;
 pub mod config;
+pub mod error;
+pub mod handler;
+pub mod resources;
 pub mod webserver;
-
-use std::{collections::HashSet, fs::read_dir, path::Path};
 
 use actix_web::rt::System;
 use config::Config;
 use env_logger::Env;
 use once_cell::sync::OnceCell;
+use std::{collections::HashSet, fs::read_dir, path::Path};
 
 /// Configuration path
 pub const CONFIG_PATH: &str = "./data";
@@ -90,9 +93,9 @@ fn print_dir_info(config: &Config) {
         if files + dirs == 0 {
             log::warn!("Empty: {:?} located at {:?}", dir.name, dir.path);
         } else {
-            log::debug!("Resources for {:?}", dir.name);
-            log::debug!("\t{files} files.");
-            log::debug!("\t{dirs} directories.");
+            log::debug!("Resources for {:?}:", dir.name);
+            log::debug!("\t-> Loaded {files} file(s).");
+            log::debug!("\t-> Ignored {dirs} directorie(s).");
         }
     }
 }

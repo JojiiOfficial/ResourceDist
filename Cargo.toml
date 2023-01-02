@@ -12,3 +12,5 @@ actix-web = { version = "4.2.1", default-features = false }
 serde = { version = "1.0.152", features = ["derive"] }
 serde_yaml = "*"
 once_cell = "*"
+blake3 = "*"
+thiserror = "*"
