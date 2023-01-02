@@ -7,22 +7,32 @@ use std::{
 use crate::error::Error;
 
 pub struct ResFile {
-    file: PathBuf,
+    path: PathBuf,
 }
 
 impl ResFile {
     pub(crate) fn new(file: PathBuf) -> Self {
-        Self { file }
+        Self { path: file }
     }
 
     /// Creates a hash value of the given resource
     pub fn hash(&self) -> Result<String, Error> {
         let mut hasher = blake3::Hasher::new();
-        let file = File::open(&self.file)?;
+        let file = File::open(&self.path)?;
         let buf_reader = BufReader::new(file);
         copy_wide(buf_reader, &mut hasher)?;
         let fin = hasher.finalize();
         Ok(fin.to_hex().to_string())
+    }
+
+    /// Get a std file for the ResFile
+    pub fn file(&self) -> Result<File, std::io::Error> {
+        File::open(&self.path)
+    }
+
+    #[inline]
+    pub fn path(&self) -> &PathBuf {
+        &self.path
     }
 }
 
