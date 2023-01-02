@@ -1,5 +1,7 @@
 pub mod get_file;
 pub mod get_hash;
+pub mod healthy;
+pub mod ready;
 
 use crate::resources::Resource;
 use actix_web::HttpRequest;

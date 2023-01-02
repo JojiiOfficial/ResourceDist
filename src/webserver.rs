@@ -5,6 +5,11 @@ pub async fn start() -> std::io::Result<()> {
     let address = &config().webserver.bind_address;
     HttpServer::new(move || {
         App::new()
+            .route("/ready", web::get().to(handler::ready::ready_endpoint))
+            .route(
+                "/healthy",
+                web::get().to(handler::healthy::healthy_endpoint),
+            )
             .route(
                 "/hash/{resource}/{file}",
                 web::get().to(handler::get_hash::get_hash_endpoint),
