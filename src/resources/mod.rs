@@ -2,19 +2,22 @@ pub mod file;
 pub mod manager;
 
 use self::file::ResFile;
-use crate::{config::Directory, error::Error};
+use crate::{
+    config::{self, Resource as ConfigRes},
+    error::Error,
+};
 use std::path::{Path, PathBuf};
 
 pub use manager::get;
 
 /// A single configured resource
 pub struct Resource<'a> {
-    dir: &'a Directory,
+    conf_res: &'a ConfigRes,
 }
 
 impl<'a> Resource<'a> {
-    pub fn new(dir: &'a Directory) -> Self {
-        Self { dir }
+    pub fn new(dir: &'a ConfigRes) -> Self {
+        Self { conf_res: dir }
     }
 
     pub fn get_file(&self, name: &str) -> Result<ResFile, Error> {
@@ -37,6 +40,11 @@ impl<'a> Resource<'a> {
     }
 
     pub fn get_path(&self) -> &Path {
-        Path::new(&self.dir.path)
+        Path::new(&self.conf_res.path)
+    }
+
+    #[inline]
+    pub fn configuration(&self) -> &'a config::Resource {
+        &self.conf_res
     }
 }

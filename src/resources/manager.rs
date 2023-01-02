@@ -1,14 +1,14 @@
 use super::Resource;
-use crate::config::{self, Config, Directory};
+use crate::config::{self, Config};
 
 /// Helper for managing resources
 pub struct ResManager<'a> {
-    dirs: &'a config::Resources,
+    config_res: &'a config::Resources,
 }
 
 impl<'a> ResManager<'a> {
     pub fn new(dirs: &'a config::Resources) -> Self {
-        Self { dirs }
+        Self { config_res: dirs }
     }
 
     #[inline]
@@ -17,8 +17,8 @@ impl<'a> ResManager<'a> {
     }
 
     /// Returns the directory config for the given name
-    pub fn get_dir(&self, name: &str) -> Option<&Directory> {
-        self.dirs.directories.iter().find(|i| i.name == name)
+    pub fn get_dir(&self, name: &str) -> Option<&config::Resource> {
+        self.config_res.directories.iter().find(|i| i.name == name)
     }
 
     /// Gets a resource by its name

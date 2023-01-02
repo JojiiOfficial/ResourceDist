@@ -1,6 +1,5 @@
-use actix_web::{web, App, HttpServer};
-
 use crate::{config, handler};
+use actix_web::{web, App, HttpServer};
 
 pub async fn start() -> std::io::Result<()> {
     let address = &config().webserver.bind_address;

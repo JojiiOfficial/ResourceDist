@@ -38,13 +38,14 @@ impl Default for Webserver {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Resources {
-    pub directories: Vec<Directory>,
+    pub directories: Vec<Resource>,
 }
 
 impl Default for Resources {
     fn default() -> Self {
         Self {
-            directories: vec![Directory {
+            directories: vec![Resource {
+                access_token: "REPLACEME".to_string(),
                 name: "dir1".to_string(),
                 path: "/mnt/directory1".to_string(),
             }],
@@ -53,7 +54,8 @@ impl Default for Resources {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Directory {
+pub struct Resource {
+    pub access_token: String,
     pub name: String,
     pub path: String,
 }
