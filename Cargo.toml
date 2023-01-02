@@ -1,0 +1,14 @@
+[package]
+name = "res_dist"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+log = "0.4.17"
+env_logger = { version = "0.10.0"}
+actix-web = { version = "4.2.1", default-features = false }
+serde = { version = "1.0.152", features = ["derive"] }
+serde_yaml = "*"
+once_cell = "*"
