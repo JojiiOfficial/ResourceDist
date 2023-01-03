@@ -15,3 +15,4 @@ serde_yaml = "*"
 once_cell = "*"
 blake3 = "*"
 thiserror = "*"
+figment = { version = "0.10", features = ["yaml", "env"] }

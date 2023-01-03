@@ -1,10 +1,9 @@
-use serde::{Deserialize, Serialize};
-use std::{
-    error::Error,
-    fs::File,
-    io::{BufReader, BufWriter},
-    path::Path,
+use figment::{
+    providers::{Env, Format, Yaml},
+    Figment,
 };
+use serde::{Deserialize, Serialize};
+use std::{error::Error, fs::File, io::BufWriter, path::Path};
 
 /// Configuration for jotoba login server
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -25,13 +24,13 @@ impl Default for Config {
 /// Webserver configurations
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Webserver {
-    pub bind_address: String,
+    pub bindaddress: String,
 }
 
 impl Default for Webserver {
     fn default() -> Self {
         Self {
-            bind_address: "127.0.0.1:8080".to_string(),
+            bindaddress: "127.0.0.1:8080".to_string(),
         }
     }
 }
@@ -45,7 +44,7 @@ impl Default for Resources {
     fn default() -> Self {
         Self {
             directories: vec![Resource {
-                access_token: "REPLACEME".to_string(),
+                accesstoken: "REPLACEME".to_string(),
                 name: "dir1".to_string(),
                 path: "/mnt/directory1".to_string(),
             }],
@@ -55,16 +54,19 @@ impl Default for Resources {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Resource {
-    pub access_token: String,
+    pub accesstoken: String,
     pub name: String,
     pub path: String,
 }
 
 impl Config {
-    pub fn load_file(file: &str) -> Result<Config, Box<dyn Error>> {
-        log::info!("Trying to load config file from {}", file);
-        let read = BufReader::new(File::open(file)?);
-        Ok(serde_yaml::from_reader(read)?)
+    pub fn load_file<P: AsRef<Path>>(file: P) -> Result<Config, Box<dyn Error>> {
+        log::info!("Trying to load config file from {:?}", file.as_ref());
+        let config: Config = Figment::new()
+            .merge(Yaml::file(file))
+            .merge(Env::prefixed("app_").split("_"))
+            .extract()?;
+        Ok(config)
     }
 
     pub fn load(file_path: &str, file_name: &str) -> Result<Config, Box<dyn Error>> {
@@ -85,7 +87,6 @@ impl Config {
         }
 
         log::info!("Loading config from {}", file_path);
-        let read = BufReader::new(File::open(path)?);
-        Ok(serde_yaml::from_reader(read)?)
+        Self::load_file(path)
     }
 }

@@ -7,7 +7,7 @@ use crate::resources::Resource;
 use actix_web::HttpRequest;
 
 pub(crate) fn check_token(req: &HttpRequest, res: &Resource) -> bool {
-    let res_token = res.configuration().access_token.trim();
+    let res_token = res.configuration().accesstoken.trim();
 
     // We don't need token for empty configs
     if res_token.is_empty() {
